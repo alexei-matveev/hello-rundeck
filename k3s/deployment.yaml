@@ -26,9 +26,12 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 4440
+        # FIXME: the first  thing Rundeck does is to  redirect the new
+        # user elsewhere.  Try hardcoding  the Ingress URL  as defined
+        # below:
         env:
-        - name: "XXX"
-          value: "yyy"
+        - name: "RUNDECK_GRAILS_URL"
+          value: "http://rundeck.localhost"
 ---
 apiVersion: v1
 kind: Service
