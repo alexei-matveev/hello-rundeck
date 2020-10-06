@@ -31,8 +31,10 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 4440
+        # The simplest way to persist data between container
+        # starts/upgrades is to utilize named volumes [2]:
         volumeMounts:
-        - mountPath: "/rundeck-data"
+        - mountPath: "/home/rundeck/server/data"
           name: "rundeck-data"
         # FIXME: the first  thing Rundeck does is to  redirect the new
         # user elsewhere.  Try hardcoding  the Ingress URL  as defined
