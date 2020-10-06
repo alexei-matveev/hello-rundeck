@@ -1,0 +1,81 @@
+#
+# kubectl apply -k .
+#
+# [1] https://hub.docker.com/r/rundeck/rundeck/
+# [2] https://github.com/rundeck/docker-zoo
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rundeck-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: rundeck-server
+  template:
+    metadata:
+      labels:
+        component: rundeck-server
+    spec:
+      containers:
+      - name: rundeck-server
+        # docker pull rundeck/rundeck:3.3.3
+        # docker run --name some-rundeck -v data:/home/rundeck/server/data rundeck/rundeck
+        image: rundeck/rundeck:3.3.3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4440
+        env:
+        - name: "XXX"
+          value: "yyy"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rundeck-server
+spec:
+  type: ClusterIP
+  selector:
+    component: rundeck-server
+  ports:
+  - port: 80
+    targetPort: 4440
+---
+#
+# We  assume here  that  *.localhost resolves  to  the local  machine.
+# Following URL should be directed to corresponding Service, also with
+# https:// protocoll:
+#
+#     http://rundeck.localhost
+#
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: rundeck
+spec:
+  rules:
+  - host: rundeck.localhost
+    http:
+      paths:
+      - backend:
+          serviceName: rundeck-server
+          servicePort: 80
+---
+# https://github.com/rancher/local-path-provisioner
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rundeck-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  # When you  dont specify  storage class at  all the  default storage
+  # class may be chosen. In k3s with local-path provisioner it is also
+  # the  default one.  Omitted  storageClassName is  not  the same  as
+  # storageClassName = "".
+  # storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+...

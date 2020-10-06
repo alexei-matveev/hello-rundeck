@@ -1,0 +1,6 @@
+# kubectl apply -k .
+namespace: "hello-rundeck"
+namePrefix: ""
+nameSuffix: ""
+resources:
+  - deployment.yaml
