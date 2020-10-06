@@ -18,6 +18,11 @@ spec:
       labels:
         component: rundeck-server
     spec:
+      # Volumes used by some or all containers of the Pod:
+      volumes:
+      - name: "rundeck-data"
+        persistentVolumeClaim:
+          claimName: "rundeck-data"
       containers:
       - name: rundeck-server
         # docker pull rundeck/rundeck:3.3.3
@@ -26,6 +31,9 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 4440
+        volumeMounts:
+        - mountPath: "/rundeck-data"
+          name: "rundeck-data"
         # FIXME: the first  thing Rundeck does is to  redirect the new
         # user elsewhere.  Try hardcoding  the Ingress URL  as defined
         # below:
