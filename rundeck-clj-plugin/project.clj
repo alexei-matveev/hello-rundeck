@@ -6,5 +6,7 @@
   :dependencies [[org.clojure/clojure "1.10.1"]]
   :main ^:skip-aot rundeck-clj-plugin.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all
+  :profiles {:provided {:dependencies
+                        [[org.rundeck/rundeck-core "3.3.3-20200910"]]}
+             :uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
