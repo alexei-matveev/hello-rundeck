@@ -21,3 +21,24 @@
              "Rundeck-Plugin-URL" "https://xxx.yyy"
              "Rundeck-Plugin-Date" "2020-10-07"
              "Rundeck-Plugin-File-Version" "20201007"})
+
+;;
+;; Rundeck prints a huge Stack  Trace after Uploading the plugin. This
+;; is a part of it:
+;;
+;; Caused by: java.lang.ExceptionInInitializerError
+;; at clojure.lang.Namespace.<init> (Namespace.java:34)
+;; at clojure.lang.Namespace.findOrCreate (Namespace.java:176)
+;; at clojure.lang.Var.internPrivate (Var.java:156)
+;; at rundeck_clj_plugin.core.<clinit> (Unknown Source)
+;; at java.base/java.lang.Class.forName0 (Native Method)
+;; at java.base/java.lang.Class.forName (Class.java:398)
+;; at com.dtolabs.rundeck.core.plugins.JarPluginProviderLoader.loadClass (JarPluginProviderLoader.java:435)
+;; ... 126 more
+;; Caused by: java.io.FileNotFoundException: Could not locate clojure/core__init.class, clojure/core.clj or clojure/core.cljc on classpath.
+;; at clojure.lang.RT.load (RT.java:462)
+;; at clojure.lang.RT.load (RT.java:424)
+;; at clojure.lang.RT.<clinit> (RT.java:338)
+;; ... 133 more
+;; com.dtolabs.rundeck.core.plugins.PluginException: Error loading class: rundeck_clj_plugin.core
+;; at com.dtolabs.rundeck.core.plugins.JarPluginProviderLoader.loadClass (JarPluginProviderLoader.java:440)
