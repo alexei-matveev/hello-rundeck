@@ -40,6 +40,8 @@ import com.dtolabs.rundeck.plugins.util.PropertyBuilder;
 
 import java.util.Map;
 
+import clojure.java.api.Clojure;
+import clojure.lang.IFn;
 
 /**
  * ExampleStepPlugin demonstrates a basic StepPlugin, and how to
@@ -63,6 +65,17 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
      */
     public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.ExampleStepPlugin";
 
+    public static void hello () {
+        // try {
+            IFn require = Clojure.var ("clojure.core", "require");
+            require.invoke (Clojure.read ("rundeck_clj_plugin.core"));
+
+            Clojure.var ("rundeck_clj_plugin.core", "hello").invoke();
+        // }
+        // catch (Throwable e) {
+        //     System.out.println (e.getMessage());
+        // }
+    }
 
     /**
      * Overriding this method gives the plugin a chance to take part in building the {@link
@@ -74,6 +87,13 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
      *      fields
      */
     public Description getDescription() {
+        //
+        // FIXME:  trying  to call  Clojure  from  here will  fail  at
+        // loading  clojure/core__init.class ---  the loader  does not
+        // find it.
+        //
+        // hello();
+        //
         return DescriptionBuilder.builder()
             .name(SERVICE_PROVIDER_NAME)
             .title("Example Step")

@@ -3,14 +3,12 @@
   :url "http://example.com/FIXME"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
-  :dependencies [#_[org.clojure/clojure "1.10.1"]
-                 #_[org.rundeck/rundeck-core "3.3.3-20200910"]]
+  :dependencies [[org.clojure/clojure "1.10.1"]]
   :java-source-paths ["src/java"]
   :main ^:skip-aot rundeck-clj-plugin.core
   :target-path "target/%s"
   :profiles {:provided {:dependencies
-                        [[org.clojure/clojure "1.10.1"]
-                         [org.rundeck/rundeck-core "3.3.3-20200910"]]}
+                        [[org.rundeck/rundeck-core "3.3.3-20200910"]]}
              :uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
   ;; https://docs.rundeck.com/docs/developer/01-plugin-development.html#java-plugin-development
@@ -25,13 +23,35 @@
              "Rundeck-Plugin-Author" "f0bec0d"
              "Rundeck-Plugin-URL" "https://xxx.yyy"
              "Rundeck-Plugin-Date" "2020-10-08"
-             "Rundeck-Plugin-File-Version" "202010080001"})
+             "Rundeck-Plugin-File-Version" "202010080004"})
 
 ;;
-;; The speculation  is that  the Clojure  Class "stab"  generated with
-;; gen-class clause  in the namespace  uses its own class  loader that
-;; cannot locate the actual init code in clojure/core__init.class. And
-;; despite   the  fact   that  both   rundeck_clj_plugin/core.class  &
+;; Even  with  a  Java  shim   as  in  ExampleStepPlugin  loading  the
+;; clojure/core stub fails with:
+;;
+;;    Could not locate clojure/core__init.class, ...
+;;
+;; It is  just that  the call  chain that  leads to  this clojure/core
+;; "stub"  ist started  bei  initializing clojure.java.api.Clojure  in
+;; this Java Code:
+;;
+;;    IFn require = Clojure.var ("clojure.core", "require");
+;;
+;; This is from the middle of the call stack:
+;;
+;; Caused by: java.io.FileNotFoundException: Could not locate clojure/core__init.class, clojure/core.clj or clojure/core.cljc on classpath.
+;; at clojure.lang.RT.load (RT.java:462) ~[?:?]
+;; at clojure.lang.RT.load (RT.java:424) ~[?:?]
+;; at clojure.lang.RT.<clinit> (RT.java:338) ~[?:?]
+;; at clojure.java.api.Clojure.<clinit> (Clojure.java:97) ~[?:?]
+;; at rundeck_clj_plugin.ExampleStepPlugin.hello (ExampleStepPlugin.java:70) ~[?:?]
+;; at rundeck_clj_plugin.ExampleStepPlugin.getDescription (ExampleStepPlugin.java:90) ~[?:?]
+;;
+;; The first attempt without Java  Shim failed too. The speculation is
+;; that the  Clojure Class "stab"  generated with gen-class  clause in
+;; the  namespace uses  its own  class loader  that cannot  locate the
+;; actual init code in  clojure/core__init.class. And despite the fact
+;; that          both         rundeck_clj_plugin/core.class          &
 ;; rundeck_clj_plugin/core__init.class are  next to each other  in the
 ;; JAR the  (Clojure) class loader  fails. Rundeck appears to  do some
 ;; non-trivial voodoo with the content of the JAR plugins --- you will
