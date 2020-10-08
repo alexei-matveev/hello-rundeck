@@ -22,7 +22,10 @@
 * Created: 11/9/12 4:09 PM
 * 
 */
-package com.dtolabs.rundeck.plugin.example;
+
+// The same namespace as in the clojure  code. That is a choice, not a
+// requirement:
+package rundeck_clj_plugin;
 
 import com.dtolabs.rundeck.core.execution.workflow.steps.FailureReason;
 import com.dtolabs.rundeck.core.execution.workflow.steps.StepException;

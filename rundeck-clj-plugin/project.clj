@@ -5,6 +5,7 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [#_[org.clojure/clojure "1.10.1"]
                  #_[org.rundeck/rundeck-core "3.3.3-20200910"]]
+  :java-source-paths ["src/java"]
   :main ^:skip-aot rundeck-clj-plugin.core
   :target-path "target/%s"
   :profiles {:provided {:dependencies
@@ -17,18 +18,14 @@
   :uberjar-name "rundeck-clj-plugin-0.1.0.jar"
   :manifest {"Rundeck-Plugin-Version" "1.2"
              "Rundeck-Plugin-Archive" "true"
-             "Rundeck-Plugin-Classnames" "rundeck_clj_plugin.core"
-             ;; This was tried as well with  the jars in ./lib --- did
-             ;; not  work.  So  I  am  not going  to  check in  binary
-             ;; jar. This  ist recorded hier  as a warning not  to try
-             ;; that again:
-             "Rundeck-Plugin-Libs" "spec.alpha-0.2.176.jar clojure-1.10.1.jar core.specs.alpha-0.2.44.jar"
-             "Class-Path" "spec.alpha-0.2.176.jar clojure-1.10.1.jar core.specs.alpha-0.2.44.jar"
+             ;; rundeck_clj_plugin.core didnt quite work, see below:
+             "Rundeck-Plugin-Classnames" "rundeck_clj_plugin.ExampleStepPlugin"
+             "Rundeck-Plugin-Libs" ""
+             ;; "Class-Path" ""
              "Rundeck-Plugin-Author" "f0bec0d"
              "Rundeck-Plugin-URL" "https://xxx.yyy"
-             "Rundeck-Plugin-Date" "2020-10-07"
-             "Rundeck-Plugin-File-Version" "202010072308"}
-  :resource-paths ["lib"])
+             "Rundeck-Plugin-Date" "2020-10-08"
+             "Rundeck-Plugin-File-Version" "202010080000"})
 
 ;;
 ;; The speculation  is that  the Clojure  Class "stab"  generated with
