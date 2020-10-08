@@ -3,25 +3,43 @@
   :url "http://example.com/FIXME"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
-  :dependencies [[org.clojure/clojure "1.10.1"]
+  :dependencies [#_[org.clojure/clojure "1.10.1"]
                  #_[org.rundeck/rundeck-core "3.3.3-20200910"]]
   :main ^:skip-aot rundeck-clj-plugin.core
   :target-path "target/%s"
   :profiles {:provided {:dependencies
-                        [[org.rundeck/rundeck-core "3.3.3-20200910"]]}
+                        [[org.clojure/clojure "1.10.1"]
+                         [org.rundeck/rundeck-core "3.3.3-20200910"]]}
              :uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
   ;; https://docs.rundeck.com/docs/developer/01-plugin-development.html#java-plugin-development
+  :jar-name "rundeck-clj-plugin-0.1.0.jar"
   :uberjar-name "rundeck-clj-plugin-0.1.0.jar"
   :manifest {"Rundeck-Plugin-Version" "1.2"
              "Rundeck-Plugin-Archive" "true"
              "Rundeck-Plugin-Classnames" "rundeck_clj_plugin.core"
-             "Rundeck-Plugin-Libs" ""
+             ;; This was tried as well with  the jars in ./lib --- did
+             ;; not  work.  So  I  am  not going  to  check in  binary
+             ;; jar. This  ist recorded hier  as a warning not  to try
+             ;; that again:
+             "Rundeck-Plugin-Libs" "spec.alpha-0.2.176.jar clojure-1.10.1.jar core.specs.alpha-0.2.44.jar"
+             "Class-Path" "spec.alpha-0.2.176.jar clojure-1.10.1.jar core.specs.alpha-0.2.44.jar"
              "Rundeck-Plugin-Author" "f0bec0d"
              "Rundeck-Plugin-URL" "https://xxx.yyy"
              "Rundeck-Plugin-Date" "2020-10-07"
-             "Rundeck-Plugin-File-Version" "20201007"})
+             "Rundeck-Plugin-File-Version" "202010072308"}
+  :resource-paths ["lib"])
 
+;;
+;; The speculation  is that  the Clojure  Class "stab"  generated with
+;; gen-class clause  in the namespace  uses its own class  loader that
+;; cannot locate the actual init code in clojure/core__init.class. And
+;; despite   the  fact   that  both   rundeck_clj_plugin/core.class  &
+;; rundeck_clj_plugin/core__init.class are  next to each other  in the
+;; JAR the  (Clojure) class loader  fails. Rundeck appears to  do some
+;; non-trivial voodoo with the content of the JAR plugins --- you will
+;; find "cache"  directories with Rundeck-Plugin-Libs unpacked  in the
+;; filesystem. No wonder the Clojure class loader fails.
 ;;
 ;; Rundeck prints a huge Stack  Trace after Uploading the plugin. This
 ;; is a part of it:
