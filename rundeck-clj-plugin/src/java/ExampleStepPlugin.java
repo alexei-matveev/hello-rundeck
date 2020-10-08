@@ -66,8 +66,16 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
     public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.ExampleStepPlugin";
 
     public static void hello () {
-        // https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
-        // Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+        //
+        // Please do not ask. I do not quite get it. Rundeck does some
+        // non-trivial staff with the class files, jars, and the class
+        // loader so  that Clojure  ist not  able to  bootstrap itself
+        // without this voodoo [1]:
+        //
+        //     Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+        //
+        // [1] https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
+        //
         Thread.currentThread()
             .setContextClassLoader (ExampleStepPlugin.class.getClassLoader());
         // try {
@@ -92,12 +100,13 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
      */
     public Description getDescription() {
         //
-        // FIXME:  trying  to call  Clojure  from  here will  fail  at
-        // loading  clojure/core__init.class ---  the loader  does not
-        // find it.
+        // Trying to call Clojure from here without the voodo with the
+        // Class   Loader,  see   hello(),   will   fail  at   loading
+        // clojure/core__init.class --- the loader  just does not find
+        // it.
         //
         hello();
-        //
+
         return DescriptionBuilder.builder()
             .name(SERVICE_PROVIDER_NAME)
             .title("Example Step")
