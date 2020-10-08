@@ -66,11 +66,15 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
     public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.ExampleStepPlugin";
 
     public static void hello () {
+        // https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
+        // Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+        Thread.currentThread()
+            .setContextClassLoader (ExampleStepPlugin.class.getClassLoader());
         // try {
             IFn require = Clojure.var ("clojure.core", "require");
-            require.invoke (Clojure.read ("rundeck_clj_plugin.core"));
+            require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
 
-            Clojure.var ("rundeck_clj_plugin.core", "hello").invoke();
+            Clojure.var ("rundeck-clj-plugin.core", "hello").invoke();
         // }
         // catch (Throwable e) {
         //     System.out.println (e.getMessage());
@@ -92,7 +96,7 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
         // loading  clojure/core__init.class ---  the loader  does not
         // find it.
         //
-        // hello();
+        hello();
         //
         return DescriptionBuilder.builder()
             .name(SERVICE_PROVIDER_NAME)

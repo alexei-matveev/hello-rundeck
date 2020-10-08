@@ -6,9 +6,7 @@
 ;; [1] https://docs.rundeck.com/docs/developer/03-step-plugins.html
 ;; [2] https://github.com/rundeck/rundeck/blob/development/examples/example-java-step-plugin/src/main/java/com/dtolabs/rundeck/plugin/example/ExampleStepPlugin.java
 ;;
-(ns rundeck-clj-plugin.core
-  ;; https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html
-  (:gen-class))
+(ns rundeck-clj-plugin.core)
 
 (defn hello []
   (println "Hello from Clojure!"))

@@ -9,8 +9,7 @@
   :target-path "target/%s"
   :profiles {:provided {:dependencies
                         [[org.rundeck/rundeck-core "3.3.3-20200910"]]}
-             :uberjar {:aot :all
-                       :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
+             :uberjar {:jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
   ;; https://docs.rundeck.com/docs/developer/01-plugin-development.html#java-plugin-development
   :jar-name "rundeck-clj-plugin-0.1.0.jar"
   :uberjar-name "rundeck-clj-plugin-0.1.0.jar"
@@ -23,8 +22,12 @@
              "Rundeck-Plugin-Author" "f0bec0d"
              "Rundeck-Plugin-URL" "https://xxx.yyy"
              "Rundeck-Plugin-Date" "2020-10-08"
-             "Rundeck-Plugin-File-Version" "202010080004"})
+             "Rundeck-Plugin-File-Version" "202010080009"})
 
+;;
+;; See the discussion of class loaders on Slack:
+;;
+;;     https://clojurians-log.clojureverse.org/clojure/2020-02-03
 ;;
 ;; Even  with  a  Java  shim   as  in  ExampleStepPlugin  loading  the
 ;; clojure/core stub fails with:
