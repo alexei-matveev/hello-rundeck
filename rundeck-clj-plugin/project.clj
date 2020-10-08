@@ -25,7 +25,7 @@
              "Rundeck-Plugin-Author" "f0bec0d"
              "Rundeck-Plugin-URL" "https://xxx.yyy"
              "Rundeck-Plugin-Date" "2020-10-08"
-             "Rundeck-Plugin-File-Version" "202010080000"})
+             "Rundeck-Plugin-File-Version" "202010080001"})
 
 ;;
 ;; The speculation  is that  the Clojure  Class "stab"  generated with

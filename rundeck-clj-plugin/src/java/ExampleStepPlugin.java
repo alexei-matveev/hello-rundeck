@@ -42,23 +42,26 @@ import java.util.Map;
 
 
 /**
- * ExampleStepPlugin demonstrates a basic {@link com.dtolabs.rundeck.plugins.step.StepPlugin}, it extends the {@link
- * BaseStepPlugin}, and demonstrates how to programmatically build all of the plugin's Properties exposed in the Rundeck
- * GUI.
- * <p/>
- * The plugin class is annotated with {@link Plugin} to define the service and name of this service provider plugin.
- * <p/>
- * The provider name of this plugin statically defined in the class. The service name makes use of {@link
- * ServiceNameConstants} to provide the known Rundeck service names.
+ * ExampleStepPlugin demonstrates a basic StepPlugin, and how to
+ * programmatically build all of the plugin's Properties exposed in
+ * the Rundeck GUI.
  *
- * @author Greg Schueler <a href="mailto:greg@dtosolutions.com">greg@dtosolutions.com</a>
+ * The plugin class is annotated with @Plugin to define the service
+ * and name of this service provider plugin.
+ *
+ * The provider name of this plugin statically defined in the
+ * class. The service name makes use of ServiceNameConstants to
+ * provide the known Rundeck service names.
+ *
+ * Original Author: Greg Schueler <greg@dtosolutions.com>.
  */
 @Plugin(name = ExampleStepPlugin.SERVICE_PROVIDER_NAME, service = ServiceNameConstants.WorkflowStep)
 public class ExampleStepPlugin implements StepPlugin, Describable {
     /**
-     * Define a name used to identify your plugin. It is a good idea to use a fully qualified package-style name.
+     * Define a name used to identify your plugin. It is a good idea
+     * to use a fully qualified package-style name.
      */
-    public static final String SERVICE_PROVIDER_NAME = "com.dtolabs.rundeck.plugin.example.ExampleStepPlugin";
+    public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.ExampleStepPlugin";
 
 
     /**
