@@ -7,8 +7,18 @@
   :java-source-paths ["src/java"]
   :main ^:skip-aot rundeck-clj-plugin.core
   :target-path "target/%s"
+  ;;
+  ;; Rundeck Core Classes are provided  by Framework --- do no include
+  ;; them  in  your  Uberjar.   The  version  here  should  better  be
+  ;; compatible  with that  in  k3s  Deployment entsprechen.   Consult
+  ;; Docker Hub  and the Developer  manual [1]. Documentation  may lag
+  ;; behind, so check Maven directly [2]:
+  ;;
+  ;; [1] https://docs.rundeck.com/docs/developer/01-plugin-development.html#java-plugin-development
+  ;; [2] https://search.maven.org/artifact/org.rundeck/rundeck-core
+  ;;
   :profiles {:provided {:dependencies
-                        [[org.rundeck/rundeck-core "3.3.3-20200910"]]}
+                        [[org.rundeck/rundeck-core "3.3.4-20201007"]]}
              :uberjar {:jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
   ;; https://docs.rundeck.com/docs/developer/01-plugin-development.html#java-plugin-development
   :jar-name "rundeck-clj-plugin-0.1.0.jar"
