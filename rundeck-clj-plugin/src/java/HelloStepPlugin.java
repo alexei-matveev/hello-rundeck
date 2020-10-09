@@ -85,13 +85,14 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     }
 
     /**
-     * Overriding this method gives the plugin a chance to take part in building the {@link
-     * com.dtolabs.rundeck.core.plugins.configuration.Description} presented by this plugin.  This subclass can use the
-     * {@link DescriptionBuilder} to modify all aspects of the description, add or remove properties, etc.
+     * Overriding this method gives the plugin a chance to take part
+     * in building the Description presented by this plugin.  This
+     * subclass can use the DescriptionBuilder to modify all
+     * aspects of the description, add or remove properties, etc.
      *
-     * @see ExampleRemoteScriptNodeStepPlugin ExampleRemoteScriptNodeStepPlugin for an example that defines properties
-     *      using annotations such that the property values will be automatically bound to the plugin class instance
-     *      fields
+     * ExampleRemoteScriptNodeStepPlugin for an example that defines
+     * properties using annotations such that the property values will
+     * be automatically bound to the plugin class instance fields
      */
     public Description getDescription() {
         //

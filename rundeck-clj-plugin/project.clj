@@ -32,7 +32,7 @@
              "Rundeck-Plugin-Author" "f0bec0d"
              "Rundeck-Plugin-URL" "https://xxx.yyy"
              "Rundeck-Plugin-Date" "2020-10-08"
-             "Rundeck-Plugin-File-Version" "202010090001"})
+             "Rundeck-Plugin-File-Version" "202010090002"})
 
 ;;
 ;; See the discussion of class loaders on Slack:
