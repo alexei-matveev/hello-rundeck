@@ -10,7 +10,6 @@
   (:import
    (com.dtolabs.rundeck.plugins.util DescriptionBuilder PropertyBuilder)))
 
-
 (defn- get-description []
   (-> (DescriptionBuilder/builder)
       (.name "rundeck_clj_plugin.HelloStepPlugin")

@@ -1,6 +1,6 @@
 (defproject rundeck-clj-plugin "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "Experimental Rundeck Plugin"
+  :url "https://github.com/alexei-matveev/hello-rundeck"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.1"]]
@@ -30,9 +30,10 @@
              "Rundeck-Plugin-Libs" ""
              ;; "Class-Path" ""
              "Rundeck-Plugin-Author" "f0bec0d"
-             "Rundeck-Plugin-URL" "https://xxx.yyy"
+             "Rundeck-Plugin-URL" "https://github.com/alexei-matveev/hello-rundeck"
              "Rundeck-Plugin-Date" "2020-10-08"
-             "Rundeck-Plugin-File-Version" "202010090003"})
+             "Rundeck-Plugin-File-Version" ~(.format (new java.text.SimpleDateFormat "yyyyMMddHHmm")
+                                                     (java.util.Date.))})
 
 ;;
 ;; See the discussion of class loaders on Slack:
