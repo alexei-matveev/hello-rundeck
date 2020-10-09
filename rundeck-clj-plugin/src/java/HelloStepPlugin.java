@@ -35,8 +35,6 @@ import com.dtolabs.rundeck.core.plugins.configuration.Description;
 import com.dtolabs.rundeck.plugins.ServiceNameConstants;
 import com.dtolabs.rundeck.plugins.step.PluginStepContext;
 import com.dtolabs.rundeck.plugins.step.StepPlugin;
-import com.dtolabs.rundeck.plugins.util.DescriptionBuilder;
-import com.dtolabs.rundeck.plugins.util.PropertyBuilder;
 
 import java.util.Map;
 
@@ -44,12 +42,13 @@ import clojure.java.api.Clojure;
 import clojure.lang.IFn;
 
 /**
- * HelloStepPlugin demonstrates a basic StepPlugin, and how to
- * programmatically build all of the plugin's Properties exposed in
- * the Rundeck GUI.
+ * HelloStepPlugin  demonstrates  a  basic StepPlugin.   Building  the
+ * plugin's  Properties to  be exposed  in  the Rundeck  GUI has  been
+ * delegated to Clojure code.
  *
- * The plugin class is annotated with @Plugin to define the service
- * and name of this service provider plugin.
+ * The plugin  class is annotated  with @Plugin to define  the service
+ * and name  of this service provider  plugin. As I understood  it ---
+ * this is a must.
  *
  * The provider name of this plugin statically defined in the
  * class. The service name makes use of ServiceNameConstants to
@@ -65,99 +64,38 @@ public class HelloStepPlugin implements StepPlugin, Describable {
      */
     public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.HelloStepPlugin";
 
-    public static Description myGetDescription () {
-        //
-        // Please do not ask. I do not quite get it. Rundeck does some
-        // non-trivial staff with the class files, jars, and the class
-        // loader so  that Clojure  ist not  able to  bootstrap itself
-        // without this voodoo [1]:
-        //
-        //     Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-        //
-        // [1] https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
-        //
+    //
+    // Trying to  call Clojure  from here without  the voodo  with the
+    // Class Loader will fail  at loading clojure/core__init.class ---
+    // the loader just does not find it.   Please do not ask. I do not
+    // quite get  it.  Rundeck  does some  non-trivial staff  with the
+    // class files, jars, and the class loader so that Clojure ist not
+    // able to bootstrap itself without this voodoo [1]:
+    //
+    //     Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+    //
+    // [1] https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
+    //
+    static Description description () {
         Thread.currentThread()
             .setContextClassLoader (HelloStepPlugin.class.getClassLoader());
+
         IFn require = Clojure.var ("clojure.core", "require");
         require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
 
-        return (Description) Clojure.var ("rundeck-clj-plugin.core", "hello").invoke();
+        IFn hello = Clojure.var ("rundeck-clj-plugin.core", "hello");
+
+        return (Description) hello.invoke();
     }
 
     /**
-     * Overriding this method gives the plugin a chance to take part
-     * in building the Description presented by this plugin.  This
-     * subclass can use the DescriptionBuilder to modify all
-     * aspects of the description, add or remove properties, etc.
-     *
-     * ExampleRemoteScriptNodeStepPlugin for an example that defines
-     * properties using annotations such that the property values will
-     * be automatically bound to the plugin class instance fields
+     * Overriding this method  gives the plugin a chance  to take part
+     * in  building the  Description presented  by this  plugin.  This
+     * subclass can  use the DescriptionBuilder to  modify all aspects
+     * of the description, add or remove properties, etc.
      */
     public Description getDescription() {
-        //
-        // Trying to call Clojure from here without the voodo with the
-        // Class   Loader,  see   hello(),   will   fail  at   loading
-        // clojure/core__init.class --- the loader  just does not find
-        // it.
-        //
-        return myGetDescription();
-
-        /*
-        return DescriptionBuilder.builder()
-            .name(SERVICE_PROVIDER_NAME)
-            .title("Example Step")
-            .description("Does nothing")
-            .property(PropertyBuilder.builder()
-                          .string("bunny")
-                          .title("Bunny")
-                          .description("Bunny name")
-                          .required(true)
-                          .build()
-            )
-            .property(PropertyBuilder.builder()
-                          .booleanType("lampkin")
-                          .title("Lampkin")
-                          .description("Want Lampkin?")
-                          .required(false)
-                          .defaultValue("false")
-                          .build()
-            )
-            .property(PropertyBuilder.builder()
-                          .freeSelect("color")
-                          .title("Color")
-                          .description("Your color")
-                          .required(false)
-                          .defaultValue("Blue")
-                          .values("Blue", "Beige", "Black")
-                          .build()
-            )
-            .property(PropertyBuilder.builder()
-                          .integer("many")
-                          .title("Many")
-                          .description("How many?")
-                          .required(false)
-                          .defaultValue("2")
-                          .build()
-            )
-            .property(PropertyBuilder.builder()
-                          .longType("cramp")
-                          .title("Cramp")
-                          .description("How crampy more?")
-                          .required(false)
-                          .defaultValue("20")
-                          .build()
-            )
-            .property(PropertyBuilder.builder()
-                          .select("rice")
-                          .title("Rice Cream")
-                          .description("Rice Cream Flavor")
-                          .required(false)
-                          .values("Flambe", "Crambo")
-                          .build()
-            )
-            .build();
-        */
+        return description ();
     }
 
     /**
@@ -168,10 +106,12 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     }
 
     /**
-     * Here is the meat of the plugin implementation, which should perform the appropriate logic for your plugin.
-     * <p/>
-     * The {@link PluginStepContext} provides access to the appropriate Nodes, the configuration of the plugin, and
-     * details about the step number and context.
+     * Here is  the meat  of the  plugin implementation,  which should
+     * perform the appropriate logic for your plugin.
+     *
+     * The PluginStepContext provides access to the appropriate Nodes,
+     * the configuration  of the  plugin, and  details about  the step
+     * number and context.
      */
     public void executeStep(final PluginStepContext context, final Map<String, Object> configuration) throws
                                                                                                       StepException{
