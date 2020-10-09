@@ -26,13 +26,13 @@
   :manifest {"Rundeck-Plugin-Version" "1.2"
              "Rundeck-Plugin-Archive" "true"
              ;; rundeck_clj_plugin.core didnt quite work, see below:
-             "Rundeck-Plugin-Classnames" "rundeck_clj_plugin.ExampleStepPlugin"
+             "Rundeck-Plugin-Classnames" "rundeck_clj_plugin.HelloStepPlugin"
              "Rundeck-Plugin-Libs" ""
              ;; "Class-Path" ""
              "Rundeck-Plugin-Author" "f0bec0d"
              "Rundeck-Plugin-URL" "https://xxx.yyy"
              "Rundeck-Plugin-Date" "2020-10-08"
-             "Rundeck-Plugin-File-Version" "202010080010"})
+             "Rundeck-Plugin-File-Version" "202010090001"})
 
 ;;
 ;; See the discussion of class loaders on Slack:

@@ -12,7 +12,7 @@
 
 (defn- get-description []
   (-> (DescriptionBuilder/builder)
-      (.name "ExampleStepPlugin")
+      (.name "rundeck_clj_plugin.HelloStepPlugin")
       (.title "Example Step")
       (.description "Does nothing")
       (.property (-> (PropertyBuilder/builder)

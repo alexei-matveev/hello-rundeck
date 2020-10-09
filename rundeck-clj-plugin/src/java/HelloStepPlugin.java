@@ -16,7 +16,7 @@
  */
 
 /*
-* ExampleStepPlugin.java
+* HelloStepPlugin.java
 * 
 * User: Greg Schueler <a href="mailto:greg@dtosolutions.com">greg@dtosolutions.com</a>
 * Created: 11/9/12 4:09 PM
@@ -44,7 +44,7 @@ import clojure.java.api.Clojure;
 import clojure.lang.IFn;
 
 /**
- * ExampleStepPlugin demonstrates a basic StepPlugin, and how to
+ * HelloStepPlugin demonstrates a basic StepPlugin, and how to
  * programmatically build all of the plugin's Properties exposed in
  * the Rundeck GUI.
  *
@@ -57,13 +57,13 @@ import clojure.lang.IFn;
  *
  * Original Author: Greg Schueler <greg@dtosolutions.com>.
  */
-@Plugin(name = ExampleStepPlugin.SERVICE_PROVIDER_NAME, service = ServiceNameConstants.WorkflowStep)
-public class ExampleStepPlugin implements StepPlugin, Describable {
+@Plugin(name = HelloStepPlugin.SERVICE_PROVIDER_NAME, service = ServiceNameConstants.WorkflowStep)
+public class HelloStepPlugin implements StepPlugin, Describable {
     /**
      * Define a name used to identify your plugin. It is a good idea
      * to use a fully qualified package-style name.
      */
-    public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.ExampleStepPlugin";
+    public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.HelloStepPlugin";
 
     public static Description myGetDescription () {
         //
@@ -77,7 +77,7 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
         // [1] https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
         //
         Thread.currentThread()
-            .setContextClassLoader (ExampleStepPlugin.class.getClassLoader());
+            .setContextClassLoader (HelloStepPlugin.class.getClassLoader());
         IFn require = Clojure.var ("clojure.core", "require");
         require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
 
