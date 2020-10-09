@@ -65,7 +65,7 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
      */
     public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.ExampleStepPlugin";
 
-    public static void hello () {
+    public static Description myGetDescription () {
         //
         // Please do not ask. I do not quite get it. Rundeck does some
         // non-trivial staff with the class files, jars, and the class
@@ -78,15 +78,10 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
         //
         Thread.currentThread()
             .setContextClassLoader (ExampleStepPlugin.class.getClassLoader());
-        // try {
-            IFn require = Clojure.var ("clojure.core", "require");
-            require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
+        IFn require = Clojure.var ("clojure.core", "require");
+        require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
 
-            Clojure.var ("rundeck-clj-plugin.core", "hello").invoke();
-        // }
-        // catch (Throwable e) {
-        //     System.out.println (e.getMessage());
-        // }
+        return (Description) Clojure.var ("rundeck-clj-plugin.core", "hello").invoke();
     }
 
     /**
@@ -105,8 +100,9 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
         // clojure/core__init.class --- the loader  just does not find
         // it.
         //
-        hello();
+        return myGetDescription();
 
+        /*
         return DescriptionBuilder.builder()
             .name(SERVICE_PROVIDER_NAME)
             .title("Example Step")
@@ -160,6 +156,7 @@ public class ExampleStepPlugin implements StepPlugin, Describable {
                           .build()
             )
             .build();
+        */
     }
 
     /**

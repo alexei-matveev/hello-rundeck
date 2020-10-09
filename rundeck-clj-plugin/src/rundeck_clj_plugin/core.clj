@@ -6,10 +6,28 @@
 ;; [1] https://docs.rundeck.com/docs/developer/03-step-plugins.html
 ;; [2] https://github.com/rundeck/rundeck/blob/development/examples/example-java-step-plugin/src/main/java/com/dtolabs/rundeck/plugin/example/ExampleStepPlugin.java
 ;;
-(ns rundeck-clj-plugin.core)
+(ns rundeck-clj-plugin.core
+  (:import (com.dtolabs.rundeck.plugins.util DescriptionBuilder)
+           (com.dtolabs.rundeck.plugins.util PropertyBuilder)))
+
+(defn- get-description []
+  (-> (DescriptionBuilder/builder)
+      (.name "ExampleStepPlugin")
+      (.title "Example Step")
+      (.description "Does nothing")
+      (.property (-> (PropertyBuilder/builder)
+                     (.string "bunny")
+                     (.title "Bunny")
+                     (.description "Bunny name")
+                     (.required true)
+                     (.build)))
+      (.build)))
 
 (defn hello []
-  (println "Hello from Clojure!"))
+  (println "Hello from Clojure!")
+  (let [description (get-description)]
+    description))
+
 ;;
 ;; I am afraid we need a real Class implementing the interface, not an
 ;; object or object factory. So that thigs like reify do not qualify.
