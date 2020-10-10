@@ -18,7 +18,10 @@
 (ns rundeck-clj-plugin.core
   (:import
    (com.dtolabs.rundeck.plugins.util DescriptionBuilder PropertyBuilder)
-   (com.dtolabs.rundeck.plugins.step PluginStepContext)))
+   (com.dtolabs.rundeck.plugins.step PluginStepContext)
+   ;; We wont  really need  to construct  nodes here,  just understand
+   ;; them good enough:
+   (com.dtolabs.rundeck.core.common NodeEntryImpl NodeSetImpl)))
 
 (defn get-description [name]
   (println "Hello from Clojure!")
@@ -88,17 +91,6 @@
   ;; It is what it says:
   (println {:step-number (-> context .getStepNumber)})
 
-  ;;
-  ;; A Node  in Rundeck  is a glorified  map of  atributes Map<String,
-  ;; String> and an extra set of  string-valued tags all buried in the
-  ;; Java MBean  legacy.  Node Set  is internally a TreeMap  from node
-  ;; names to  such Nodes TreeMap<String, INodeEntry>  albeit obscured
-  ;; by its custom  set of accessors hiding the  actual TreeMap behind
-  ;; an INodeSet of NodeSetImpl [1].
-  ;;
-  ;; [1] https://github.com/rundeck/rundeck/blob/main/core/src/main/java/com/dtolabs/rundeck/core/common/NodeSetImpl.java
-  ;;
-
   ;; .getNodeNames returns just the keys, ...
   (println
    {:node-names (seq (-> context .getNodes .getNodeNames))})
@@ -107,14 +99,42 @@
   (println
    (let [nodes (.getNodes context)]
      (for [node nodes]
-       ;; One is HashMap another is HashSet, thus "plain data" and can
-       ;; be used as is from Clojure, actually:
+       ;; One is a HashMap another is a HashSet, thus "plain data" and
+       ;; can be used as is from Clojure, actually:
        {:attributes (into {} (.getAttributes node)),
         :tags (into #{} (.getTags node))})))
 
   ;; .getStepContext is an ArrayList, of what?
   (println
    {:step-context (seq (.getStepContext context))}))
+
+;;
+;; A Node in  Rundeck is a glorified map  of atributes HashMap<String,
+;; String> and  an extra HashSet  of string-valued tags all  buried in
+;; the Java MBean  legacy [1].  Node Set is internally  a TreeMap from
+;; node  names  to  such   Nodes  TreeMap<String,  INodeEntry>  albeit
+;; obscured by its  custom set of accessors hiding  the actual TreeMap
+;; behind an INodeSet of NodeSetImpl [2].
+;;
+;; [1] https://github.com/rundeck/rundeck/blob/main/core/src/main/java/com/dtolabs/rundeck/core/common/NodeEntryImpl.java
+;; [2] https://github.com/rundeck/rundeck/blob/main/core/src/main/java/com/dtolabs/rundeck/core/common/NodeSetImpl.java
+;;
+(defn- demo-make-node []
+  ;; Attributes as  a *persistent* Map does  not allow Put-Operations,
+  ;; thus if you try to  .setTags after .setAttributes you will notice
+  ;; it. Setting tags has namely an additional the effect of inserting
+  ;; an attribute "tags" which is  a comma separated list derived from
+  ;; the set.   Though here we  appear to  overwrite that list  with a
+  ;; subsequent   .setAttributes.   Go   figure.   Do   not  use   the
+  ;; *attribute* "tags".
+  (let [node (doto (NodeEntryImpl.)
+               ;; Should rather be a mutable HashSet:
+               (.setTags #{"critical" "to be removed"})
+               ;; Should rather be a mutable HashMap:
+               (.setAttributes {"name" "localhost", "hostid" "1234"}))]
+    {:node node
+     :tags (.getTags node)
+     :attributes (.getAttributes node)}))
 
 (defn -main
   "I don't do a whole lot ... yet."
