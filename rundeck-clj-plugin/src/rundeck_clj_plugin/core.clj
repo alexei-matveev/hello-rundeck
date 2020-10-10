@@ -18,7 +18,8 @@
 ;;
 (ns rundeck-clj-plugin.core
   (:import
-   (com.dtolabs.rundeck.plugins.util DescriptionBuilder PropertyBuilder)))
+   (com.dtolabs.rundeck.plugins.util DescriptionBuilder PropertyBuilder)
+   (com.dtolabs.rundeck.plugins.step PluginStepContext)))
 
 (defn get-description []
   (println "Hello from Clojure!")
@@ -70,7 +71,7 @@
                      (.build)))
       (.build)))
 
-(defn execute-step [context configuration]
+(defn execute-step [^PluginStepContext context configuration]
   (println "I dont execute much yet!")
 
   ;; Supplied confuguration is just a java.util.HashMap, if you prefer
