@@ -1,36 +1,23 @@
 # rundeck-clj-plugin
 
-FIXME: description
+Trying Clojure for Rundeck plugin.
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Build it:
 
-## Usage
+    $ lein uberjar
 
-FIXME: explanation
+Install it into libext:
 
-    $ java -jar rundeck-clj-plugin-0.1.0-standalone.jar [args]
+    $ kubectl cp target/uberjar/rundeck-clj-plugin-0.1.0.jar hello-rundeck/rundeck-server-xxx:/home/rundeck/libext/
+    $ kubectl exec rundeck-server-xxx -- ls -l /home/rundeck/libext
 
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+Or upload the JAR file in GUI.
 
 ## License
 
-Copyright © 2020 FIXME
+Copyright © 2020 <alexei.matveev@gmail.com>
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
