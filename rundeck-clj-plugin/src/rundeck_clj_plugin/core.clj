@@ -70,8 +70,8 @@
 ;; java.util.Map<java.lang.String, java.lang.Object>
 ;; configuration)(defn -executeStep [_ context configuration]
 
-(defn -executeStep [_ context configuration]
-  (println "I dont do nothing yet!"))
+(defn execute-step [context configuration]
+  (println "I dont execute anything yet!"))
 
 (defn -main
   "I don't do a whole lot ... yet."

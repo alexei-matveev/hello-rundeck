@@ -77,6 +77,7 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     // [1] https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
     //
     static Description description () {
+        // FIXME: Move that to the construcrot maybe?
         Thread.currentThread()
             .setContextClassLoader (HelloStepPlugin.class.getClassLoader());
 
@@ -98,11 +99,22 @@ public class HelloStepPlugin implements StepPlugin, Describable {
         return description ();
     }
 
-    /**
-     * This enum lists the known reasons this plugin might fail
-     */
+    // This enum lists the known reasons this plugin might fail
     static enum Reason implements FailureReason{
         ExampleReason
+    }
+
+    static void execute_step (final PluginStepContext context, final Map<String, Object> configuration) {
+        // FIXME: Move that to the construcrot maybe?
+        Thread.currentThread()
+            .setContextClassLoader (HelloStepPlugin.class.getClassLoader());
+
+        IFn require = Clojure.var ("clojure.core", "require");
+        require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
+
+        IFn fn = Clojure.var ("rundeck-clj-plugin.core", "execute-step");
+
+        fn.invoke(context, configuration);
     }
 
     /**
@@ -113,12 +125,16 @@ public class HelloStepPlugin implements StepPlugin, Describable {
      * the configuration  of the  plugin, and  details about  the step
      * number and context.
      */
-    public void executeStep(final PluginStepContext context, final Map<String, Object> configuration) throws
+    public void executeStep (final PluginStepContext context, final Map<String, Object> configuration) throws
                                                                                                       StepException{
         System.out.println("Example step executing on nodes: " + context.getNodes().getNodeNames());
         System.out.println("Example step configuration: " + configuration);
         System.out.println("Example step num: " + context.getStepNumber());
         System.out.println("Example step context: " + context.getStepContext());
+
+        // Calling Clojure again:
+        execute_step (context, configuration);
+
         if ("true".equals(configuration.get("lampkin"))) {
             throw new StepException("lampkin was true", Reason.ExampleReason);
         }
