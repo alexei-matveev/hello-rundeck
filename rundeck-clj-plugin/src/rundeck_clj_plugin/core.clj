@@ -21,7 +21,7 @@
    (com.dtolabs.rundeck.plugins.step PluginStepContext)
    ;; We wont  really need  to construct  nodes here,  just understand
    ;; them good enough:
-   (com.dtolabs.rundeck.core.common NodeEntryImpl NodeSetImpl)))
+   (com.dtolabs.rundeck.core.common INodeEntry NodeEntryImpl NodeSetImpl)))
 
 (defn get-description [name]
   (println "Hello from Clojure!")
@@ -98,7 +98,7 @@
   ;; You probably want all of node attributes instead:
   (println
    (let [nodes (.getNodes context)]
-     (for [node nodes]
+     (for [^INodeEntry node nodes]
        ;; One is a HashMap another is a HashSet, thus "plain data" and
        ;; can be used as is from Clojure, actually:
        {:attributes (into {} (.getAttributes node)),
