@@ -2,6 +2,16 @@
 ;; See if  one can implement  a Rundeck Plugin with  Clojure. Probably
 ;; not without a Java shim.
 ;;
+;; We need a real Class implementing Rundeck interfaces, not an object
+;; or   object   factory.   So   that  thigs   like   reify   do   not
+;; qualify. Moreover Rundeck apparently requires @Plugin annotation on
+;; such Plugin Classes aka Providers. Sigh ...
+;;
+;; https://www.javadoc.io/doc/org.rundeck/rundeck-core/3.3.3-20200910/com/dtolabs/rundeck/plugins/step/StepPlugin.html
+;;
+;; executeStep (PluginStepContext context,
+;; java.util.Map<java.lang.String, java.lang.Object>
+;; configuration)(defn -executeStep [_ context configuration]
 ;;
 ;; [1] https://docs.rundeck.com/docs/developer/03-step-plugins.html
 ;; [2] https://github.com/rundeck/rundeck/blob/development/examples/example-java-step-plugin/src/main/java/com/dtolabs/rundeck/plugin/example/ExampleStepPlugin.java
@@ -60,18 +70,30 @@
                      (.build)))
       (.build)))
 
-;;
-;; I am afraid we need a real Class implementing the interface, not an
-;; object or object factory. So that thigs like reify do not qualify.
-;;
-;; https://www.javadoc.io/doc/org.rundeck/rundeck-core/3.3.3-20200910/com/dtolabs/rundeck/plugins/step/StepPlugin.html
-;;
-;; executeStep (PluginStepContext context,
-;; java.util.Map<java.lang.String, java.lang.Object>
-;; configuration)(defn -executeStep [_ context configuration]
-
 (defn execute-step [context configuration]
-  (println "I dont execute anything yet!"))
+  (println "I dont execute much yet!")
+
+  ;; Supplied confuguration is just a java.util.HashMap, if you prefer
+  ;; to work with Clojure Maps it is one step away:
+  (println (type configuration))
+  (println configuration)
+  (println (into {} configuration))
+  (for [k (keys configuration)]
+    (println {:key k, :value (get configuration k)}))
+
+  ;; The context is a Rundeck Type PluginStepContextImpl:
+  (println (type context))
+  (println context)
+
+  ;; System.out.println("Example step executing on nodes: " + context.getNodes().getNodeNames());
+  ;; System.out.println("Example step num: " + context.getStepNumber());
+  ;; System.out.println("Example step context: " + context.getStepContext());
+
+  (println {:step-number (-> context .getStepNumber)})
+  ;; .getNodeNames returns a TreeMap:
+  (println {:nodes (seq (-> context .getNodes .getNodeNames))})
+  ;; .getStepContext is an ArrayList:
+  (println {:step-context (seq (-> context .getStepContext))}))
 
 (defn -main
   "I don't do a whole lot ... yet."
