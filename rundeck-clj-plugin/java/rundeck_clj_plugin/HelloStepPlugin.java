@@ -70,7 +70,7 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     // of the description, add or remove properties, etc.
     public Description getDescription() {
         IFn fn = Clojure.var (ns, "get-description");
-        return (Description) fn.invoke();
+        return (Description) fn.invoke (SERVICE_PROVIDER_NAME);
     }
 
     // This enum lists the known reasons this plugin might fail

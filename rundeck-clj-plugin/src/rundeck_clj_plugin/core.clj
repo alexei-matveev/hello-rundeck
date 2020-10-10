@@ -21,10 +21,10 @@
    (com.dtolabs.rundeck.plugins.util DescriptionBuilder PropertyBuilder)
    (com.dtolabs.rundeck.plugins.step PluginStepContext)))
 
-(defn get-description []
+(defn get-description [name]
   (println "Hello from Clojure!")
   (-> (DescriptionBuilder/builder)
-      (.name "rundeck_clj_plugin.HelloStepPlugin")
+      (.name name)
       (.title "Hello Step")
       (.description "Does nothing useful")
       (.property (-> (PropertyBuilder/builder)
