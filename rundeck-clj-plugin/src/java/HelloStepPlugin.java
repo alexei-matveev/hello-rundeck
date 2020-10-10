@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 DTO Labs, Inc. (http://dtolabs.com)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,10 +17,10 @@
 
 /*
 * HelloStepPlugin.java
-* 
+*
 * User: Greg Schueler <a href="mailto:greg@dtosolutions.com">greg@dtosolutions.com</a>
 * Created: 11/9/12 4:09 PM
-* 
+*
 */
 
 // The same namespace as in the clojure  code. That is a choice, not a
