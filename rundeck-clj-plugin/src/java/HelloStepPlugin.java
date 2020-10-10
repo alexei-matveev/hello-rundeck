@@ -76,11 +76,12 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     //
     // [1] https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
     //
-    static Description description () {
-        // FIXME: Move that to the construcrot maybe?
+    public HelloStepPlugin () {
         Thread.currentThread()
             .setContextClassLoader (HelloStepPlugin.class.getClassLoader());
+    }
 
+    static Description description () {
         IFn require = Clojure.var ("clojure.core", "require");
         require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
 
@@ -105,10 +106,6 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     }
 
     static void execute_step (final PluginStepContext context, final Map<String, Object> configuration) {
-        // FIXME: Move that to the construcrot maybe?
-        Thread.currentThread()
-            .setContextClassLoader (HelloStepPlugin.class.getClassLoader());
-
         IFn require = Clojure.var ("clojure.core", "require");
         require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
 
