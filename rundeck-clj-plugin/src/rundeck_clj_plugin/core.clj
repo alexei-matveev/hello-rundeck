@@ -130,17 +130,19 @@
 ;; obscured by its  custom set of accessors hiding  the actual TreeMap
 ;; behind an INodeSet of NodeSetImpl [2].
 ;;
+;; Attributes  as a  *persistent* Map  does not  allow Put-Operations,
+;; thus if  you try to  .setTags after .setAttributes you  will notice
+;; it. Setting tags  has namely the additional effect  of inserting an
+;; attribute "tags" which  is a comma separated list  derived from the
+;; set.   Though  here  we  appear  to  overwrite  that  list  with  a
+;; subsequent .setAttributes.  Go figure.   Do not use the *attribute*
+;; "tags".  FWIW, the order in the example is reversed [3].
+;;
 ;; [1] https://github.com/rundeck/rundeck/blob/main/core/src/main/java/com/dtolabs/rundeck/core/common/NodeEntryImpl.java
 ;; [2] https://github.com/rundeck/rundeck/blob/main/core/src/main/java/com/dtolabs/rundeck/core/common/NodeSetImpl.java
+;; [3] https://github.com/rundeck/rundeck/blob/development/examples/json-plugin/src/main/java/com/dtolabs/rundeck/plugin/resources/format/json/JsonResourceFormatParser.java
 ;;
 (defn- demo-make-node []
-  ;; Attributes as  a *persistent* Map does  not allow Put-Operations,
-  ;; thus if you try to  .setTags after .setAttributes you will notice
-  ;; it. Setting tags has namely the additional effect of inserting an
-  ;; attribute "tags" which is a comma separated list derived from the
-  ;; set.   Though  here we  appear  to  overwrite  that list  with  a
-  ;; subsequent   .setAttributes.   Go   figure.   Do   not  use   the
-  ;; *attribute* "tags".
   (let [node (doto (NodeEntryImpl.)
                ;; Should rather be a mutable HashSet:
                (.setTags #{"critical" "to be removed"})
