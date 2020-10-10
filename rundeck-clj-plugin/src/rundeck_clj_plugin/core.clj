@@ -25,9 +25,9 @@
 
 ;; To make Description for a Describable Plugin you may consider using
 ;; this  Builder pattern.   There are  instances for  method ".values"
-;; taking a List ana a variadic instance.  Use (.values [..])  because
-;; a vector  is a java List  too but calling variadinc  Java functions
-;; from Clojure can be a pain.
+;; taking  a  List  and  a variadic  instance.   Use  (.values  [...])
+;; because  a vector  is a  java List  too but  calling variadic  Java
+;; functions from Clojure can be a pain.
 (defn get-description [name]
   (println "Hello from Clojure!")
   (-> (DescriptionBuilder/builder)
