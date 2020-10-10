@@ -63,6 +63,7 @@ public class HelloStepPlugin implements StepPlugin, Describable {
      * to use a fully qualified package-style name.
      */
     public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.HelloStepPlugin";
+    static final String ns = "rundeck-clj-plugin.core";
 
     //
     // Trying to  call Clojure  from here without  the voodo  with the
@@ -83,11 +84,11 @@ public class HelloStepPlugin implements StepPlugin, Describable {
         // Load the namespace once, it will be used in at least two
         // methods:
         IFn require = Clojure.var ("clojure.core", "require");
-        require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
+        require.invoke (Clojure.read (ns));
     }
 
     static Description description () {
-        IFn fn = Clojure.var ("rundeck-clj-plugin.core", "get-description");
+        IFn fn = Clojure.var (ns, "get-description");
         return (Description) fn.invoke();
     }
 
@@ -107,7 +108,7 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     }
 
     static void execute_step (final PluginStepContext context, final Map<String, Object> configuration) {
-        IFn fn = Clojure.var ("rundeck-clj-plugin.core", "execute-step");
+        IFn fn = Clojure.var (ns, "execute-step");
         fn.invoke (context, configuration);
     }
 
