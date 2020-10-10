@@ -105,7 +105,7 @@
 
   ;; You probably want all of node attributes instead:
   (println
-   (let [nodes (-> context .getNodes)]
+   (let [nodes (.getNodes context)]
      (for [node nodes]
        ;; One is HashMap another is HashSet, thus "plain data" and can
        ;; be used as is from Clojure, actually:
@@ -114,7 +114,7 @@
 
   ;; .getStepContext is an ArrayList, of what?
   (println
-   {:step-context (seq (-> context .getStepContext))}))
+   {:step-context (seq (.getStepContext context))}))
 
 (defn -main
   "I don't do a whole lot ... yet."
