@@ -87,10 +87,34 @@
 
   ;; It is what it says:
   (println {:step-number (-> context .getStepNumber)})
-  ;; .getNodeNames returns a TreeMap, why actually?
-  (println {:nodes (seq (-> context .getNodes .getNodeNames))})
+
+  ;;
+  ;; A Node  in Rundeck  is a glorified  map of  atributes Map<String,
+  ;; String> and an extra set of  string-valued tags all buried in the
+  ;; Java MBean  legacy.  Node Set  is internally a TreeMap  from node
+  ;; names to  such Nodes TreeMap<String, INodeEntry>  albeit obscured
+  ;; by its custom  set of accessors hiding the  actual TreeMap behind
+  ;; an INodeSet of NodeSetImpl [1].
+  ;;
+  ;; [1] https://github.com/rundeck/rundeck/blob/main/core/src/main/java/com/dtolabs/rundeck/core/common/NodeSetImpl.java
+  ;;
+
+  ;; .getNodeNames returns just the keys, ...
+  (println
+   {:node-names (seq (-> context .getNodes .getNodeNames))})
+
+  ;; You probably want all of node attributes instead:
+  (println
+   (let [nodes (-> context .getNodes)]
+     (for [node nodes]
+       ;; One is HashMap another is HashSet, thus "plain data" and can
+       ;; be used as is from Clojure, actually:
+       {:attributes (into {} (.getAttributes node)),
+        :tags (into #{} (.getTags node))})))
+
   ;; .getStepContext is an ArrayList, of what?
-  (println {:step-context (seq (-> context .getStepContext))}))
+  (println
+   {:step-context (seq (-> context .getStepContext))}))
 
 (defn -main
   "I don't do a whole lot ... yet."
