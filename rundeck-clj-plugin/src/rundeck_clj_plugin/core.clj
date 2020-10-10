@@ -122,9 +122,9 @@
 (defn- demo-make-node []
   ;; Attributes as  a *persistent* Map does  not allow Put-Operations,
   ;; thus if you try to  .setTags after .setAttributes you will notice
-  ;; it. Setting tags has namely an additional the effect of inserting
-  ;; an attribute "tags" which is  a comma separated list derived from
-  ;; the set.   Though here we  appear to  overwrite that list  with a
+  ;; it. Setting tags has namely the additional effect of inserting an
+  ;; attribute "tags" which is a comma separated list derived from the
+  ;; set.   Though  here we  appear  to  overwrite  that list  with  a
   ;; subsequent   .setAttributes.   Go   figure.   Do   not  use   the
   ;; *attribute* "tags".
   (let [node (doto (NodeEntryImpl.)
