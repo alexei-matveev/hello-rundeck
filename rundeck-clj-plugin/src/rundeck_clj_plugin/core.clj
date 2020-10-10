@@ -78,16 +78,13 @@
   (println (type configuration))
   (println configuration)
   (println (into {} configuration))
-  (for [k (keys configuration)]
-    (println {:key k, :value (get configuration k)}))
+  (doall
+   (for [k (keys configuration)]
+     (println {:key k, :value (get configuration k)})))
 
   ;; The context is a Rundeck Type PluginStepContextImpl:
   (println (type context))
   (println context)
-
-  ;; System.out.println("Example step executing on nodes: " + context.getNodes().getNodeNames());
-  ;; System.out.println("Example step num: " + context.getStepNumber());
-  ;; System.out.println("Example step context: " + context.getStepContext());
 
   (println {:step-number (-> context .getStepNumber)})
   ;; .getNodeNames returns a TreeMap:
