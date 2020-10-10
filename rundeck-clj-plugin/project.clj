@@ -31,8 +31,9 @@
              ;; "Class-Path" ""
              "Rundeck-Plugin-Author" "f0bec0d"
              "Rundeck-Plugin-URL" "https://github.com/alexei-matveev/hello-rundeck"
-             "Rundeck-Plugin-Date" "2020-10-08"
-             "Rundeck-Plugin-File-Version" ~(.format (new java.text.SimpleDateFormat "yyyyMMddHHmm")
+             "Rundeck-Plugin-Date" ~(.format (java.text.SimpleDateFormat. "yyyy-MM-dd")
+                                             (java.util.Date.))
+             "Rundeck-Plugin-File-Version" ~(.format (java.text.SimpleDateFormat. "yyyyMMddHHmm")
                                                      (java.util.Date.))})
 
 ;;
