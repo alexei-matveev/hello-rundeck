@@ -23,6 +23,11 @@
    ;; them good enough:
    (com.dtolabs.rundeck.core.common INodeEntry NodeEntryImpl NodeSetImpl)))
 
+;; To make Description for a Describable Plugin you may consider using
+;; this  Builder pattern.   There are  instances for  method ".values"
+;; taking a List ana a variadic instance.  Use (.values [..])  because
+;; a vector  is a java List  too but calling variadinc  Java functions
+;; from Clojure can be a pain.
 (defn get-description [name]
   (println "Hello from Clojure!")
   (-> (DescriptionBuilder/builder)
@@ -42,13 +47,13 @@
                      (.required false)
                      (.defaultValue "false")
                      (.build)))
-      #_(.property (-> (PropertyBuilder/builder)
+      (.property (-> (PropertyBuilder/builder)
                      (.freeSelect "color")
                      (.title "Color")
                      (.description "Your color")
                      (.required false)
                      (.defaultValue "Blue")
-                     (.values (into-array String ["Blue", "Beige", "Black"]))
+                     (.values ["Blue", "Beige", "Black"])
                      (.build)))
       (.property (-> (PropertyBuilder/builder)
                      (.integer "many")
@@ -64,12 +69,12 @@
                      (.required false)
                      (.defaultValue "20")
                      (.build)))
-      #_(.property (-> (PropertyBuilder/builder)
+      (.property (-> (PropertyBuilder/builder)
                      (.select "rice")
                      (.title "Rice Cream")
                      (.description "Rice Cream Flavor")
                      (.required false)
-                     (.values (into-array String ["Flambe", "Crambo"]))
+                     (.values ["Flambe", "Crambo"])
                      (.build)))
       (.build)))
 
