@@ -10,8 +10,7 @@
 ;; https://www.javadoc.io/doc/org.rundeck/rundeck-core/3.3.3-20200910/com/dtolabs/rundeck/plugins/step/StepPlugin.html
 ;;
 ;; executeStep (PluginStepContext context,
-;; java.util.Map<java.lang.String, java.lang.Object>
-;; configuration)(defn -executeStep [_ context configuration]
+;;              java.util.Map<java.lang.String, java.lang.Object> configuration)
 ;;
 ;; [1] https://docs.rundeck.com/docs/developer/03-step-plugins.html
 ;; [2] https://github.com/rundeck/rundeck/blob/development/examples/example-java-step-plugin/src/main/java/com/dtolabs/rundeck/plugin/example/ExampleStepPlugin.java
@@ -74,23 +73,23 @@
 (defn execute-step [^PluginStepContext context configuration]
   (println "I dont execute much yet!")
 
-  ;; Supplied confuguration is just a java.util.HashMap, if you prefer
-  ;; to work with Clojure Maps it is one step away:
-  (println (type configuration))
+  ;; Supplied confuguration is just a java.util.HashMap:
   (println configuration)
+  ;; If you prefer to work with Clojure Maps it is one step away:
   (println (into {} configuration))
-  (doall
+  ;; But otherwise a HashMap is just as good of a Map:
+  (println
    (for [k (keys configuration)]
-     (println {:key k, :value (get configuration k)})))
+     {:key k, :value (get configuration k)}))
 
   ;; The context is a Rundeck Type PluginStepContextImpl:
-  (println (type context))
   (println context)
 
+  ;; It is what it says:
   (println {:step-number (-> context .getStepNumber)})
-  ;; .getNodeNames returns a TreeMap:
+  ;; .getNodeNames returns a TreeMap, why actually?
   (println {:nodes (seq (-> context .getNodes .getNodeNames))})
-  ;; .getStepContext is an ArrayList:
+  ;; .getStepContext is an ArrayList, of what?
   (println {:step-context (seq (-> context .getStepContext))}))
 
 (defn -main
