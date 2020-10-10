@@ -1,27 +1,23 @@
 /*
  * Copyright 2012 DTO Labs, Inc. (http://dtolabs.com)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License").
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * HelloStepPlugin  demonstrates  a  basic StepPlugin.   Building  the
+ * plugin's  Properties to  be exposed  in  the Rundeck  GUI has  been
+ * delegated to Clojure code.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The plugin  class is annotated  with @Plugin to define  the service
+ * and name  of this service provider  plugin. As I understood  it ---
+ * this is a must.
  *
+ * The provider name of this plugin statically defined in the
+ * class. The service name makes use of ServiceNameConstants to
+ * provide the known Rundeck service names.
+ *
+ * Original Author: Greg Schueler <greg@dtosolutions.com>, Created:
+ * 11/9/12 4:09 PM
  */
-
-/*
-* HelloStepPlugin.java
-*
-* User: Greg Schueler <a href="mailto:greg@dtosolutions.com">greg@dtosolutions.com</a>
-* Created: 11/9/12 4:09 PM
-*
-*/
 
 // The same namespace as in the clojure  code. That is a choice, not a
 // requirement:
@@ -41,21 +37,6 @@ import java.util.Map;
 import clojure.java.api.Clojure;
 import clojure.lang.IFn;
 
-/**
- * HelloStepPlugin  demonstrates  a  basic StepPlugin.   Building  the
- * plugin's  Properties to  be exposed  in  the Rundeck  GUI has  been
- * delegated to Clojure code.
- *
- * The plugin  class is annotated  with @Plugin to define  the service
- * and name  of this service provider  plugin. As I understood  it ---
- * this is a must.
- *
- * The provider name of this plugin statically defined in the
- * class. The service name makes use of ServiceNameConstants to
- * provide the known Rundeck service names.
- *
- * Original Author: Greg Schueler <greg@dtosolutions.com>.
- */
 @Plugin(name = HelloStepPlugin.SERVICE_PROVIDER_NAME, service = ServiceNameConstants.WorkflowStep)
 public class HelloStepPlugin implements StepPlugin, Describable {
     /**
@@ -103,7 +84,7 @@ public class HelloStepPlugin implements StepPlugin, Describable {
         ExampleReason
     }
 
-    /**
+    /*
      * Here is  the meat  of the  plugin implementation,  which should
      * perform the appropriate logic for your plugin.
      *
