@@ -79,14 +79,15 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     public HelloStepPlugin () {
         Thread.currentThread()
             .setContextClassLoader (HelloStepPlugin.class.getClassLoader());
+
+        // Load the namespace once, it will be used in at least two
+        // methods:
+        IFn require = Clojure.var ("clojure.core", "require");
+        require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
     }
 
     static Description description () {
-        IFn require = Clojure.var ("clojure.core", "require");
-        require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
-
         IFn fn = Clojure.var ("rundeck-clj-plugin.core", "get-description");
-
         return (Description) fn.invoke();
     }
 
@@ -106,12 +107,8 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     }
 
     static void execute_step (final PluginStepContext context, final Map<String, Object> configuration) {
-        IFn require = Clojure.var ("clojure.core", "require");
-        require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
-
         IFn fn = Clojure.var ("rundeck-clj-plugin.core", "execute-step");
-
-        fn.invoke(context, configuration);
+        fn.invoke (context, configuration);
     }
 
     /**
