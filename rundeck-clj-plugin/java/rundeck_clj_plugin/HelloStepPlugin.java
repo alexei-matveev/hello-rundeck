@@ -87,11 +87,6 @@ public class HelloStepPlugin implements StepPlugin, Describable {
         require.invoke (Clojure.read (ns));
     }
 
-    static Description description () {
-        IFn fn = Clojure.var (ns, "get-description");
-        return (Description) fn.invoke();
-    }
-
     /**
      * Overriding this method  gives the plugin a chance  to take part
      * in  building the  Description presented  by this  plugin.  This
@@ -99,17 +94,13 @@ public class HelloStepPlugin implements StepPlugin, Describable {
      * of the description, add or remove properties, etc.
      */
     public Description getDescription() {
-        return description ();
+        IFn fn = Clojure.var (ns, "get-description");
+        return (Description) fn.invoke();
     }
 
     // This enum lists the known reasons this plugin might fail
     static enum Reason implements FailureReason{
         ExampleReason
-    }
-
-    static void execute_step (final PluginStepContext context, final Map<String, Object> configuration) {
-        IFn fn = Clojure.var (ns, "execute-step");
-        fn.invoke (context, configuration);
     }
 
     /**
@@ -122,13 +113,8 @@ public class HelloStepPlugin implements StepPlugin, Describable {
      */
     public void executeStep (final PluginStepContext context, final Map<String, Object> configuration) throws
                                                                                                       StepException{
-        System.out.println("Example step executing on nodes: " + context.getNodes().getNodeNames());
-        System.out.println("Example step configuration: " + configuration);
-        System.out.println("Example step num: " + context.getStepNumber());
-        System.out.println("Example step context: " + context.getStepContext());
-
-        // Calling Clojure again:
-        execute_step (context, configuration);
+        IFn fn = Clojure.var (ns, "execute-step");
+        fn.invoke (context, configuration);
 
         if ("true".equals(configuration.get("lampkin"))) {
             throw new StepException("lampkin was true", Reason.ExampleReason);
