@@ -21,7 +21,6 @@
 // requirement:
 package rundeck_clj_plugin;
 
-import com.dtolabs.rundeck.core.execution.workflow.steps.FailureReason;
 import com.dtolabs.rundeck.core.execution.workflow.steps.StepException;
 import com.dtolabs.rundeck.core.plugins.Plugin;
 import com.dtolabs.rundeck.core.plugins.configuration.Describable;
@@ -73,24 +72,19 @@ public class HelloStepPlugin implements StepPlugin, Describable {
         return (Description) fn.invoke (SERVICE_PROVIDER_NAME);
     }
 
-    // This enum lists the known reasons this plugin might fail
-    static enum Reason implements FailureReason{
-        ExampleReason
-    }
-
     // Here is  the meat  of the  plugin implementation,  which should
     // perform the appropriate logic for your plugin.
     //
     // The PluginStepContext provides access to the appropriate Nodes,
     // the configuration  of the  plugin, and  details about  the step
     // number and context.
-    public void executeStep (final PluginStepContext context, final Map<String, Object> configuration) throws
-                                                                                                      StepException{
-        IFn fn = Clojure.var (ns, "execute-step");
-        fn.invoke (context, configuration);
+    public void executeStep (final PluginStepContext context, final Map<String, Object> configuration)
+        throws StepException {
 
-        if ("true".equals(configuration.get("lampkin"))) {
-            throw new StepException("lampkin was true", Reason.ExampleReason);
-        }
+        IFn fn = Clojure.var (ns, "execute-step");
+
+        // This  will  throw  a   StepException  for  some  values  of
+        // parameters:
+        fn.invoke (context, configuration);
     }
 }

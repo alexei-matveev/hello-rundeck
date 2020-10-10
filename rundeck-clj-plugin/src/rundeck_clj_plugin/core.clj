@@ -19,6 +19,7 @@
   (:import
    (com.dtolabs.rundeck.plugins.util DescriptionBuilder PropertyBuilder)
    (com.dtolabs.rundeck.plugins.step PluginStepContext)
+   (com.dtolabs.rundeck.core.execution.workflow.steps StepException FailureReason)
    ;; We wont  really need  to construct  nodes here,  just understand
    ;; them good enough:
    (com.dtolabs.rundeck.core.common INodeEntry NodeEntryImpl NodeSetImpl)))
@@ -111,7 +112,15 @@
 
   ;; .getStepContext is an ArrayList, of what?
   (println
-   {:step-context (seq (.getStepContext context))}))
+   {:step-context (seq (.getStepContext context))})
+
+  ;; This is how one is supposed to  fail. For some reason there was a
+  ;; requirement for the toString method to return "reason". I was not
+  ;; willing to check what happens otherweise.
+  (if (= "true" (get configuration "lampkin"))
+    (throw (StepException. "lampkin was true in clojure"
+                           (reify FailureReason
+                             (toString [_] "reason"))))))
 
 ;;
 ;; A Node in  Rundeck is a glorified map  of atributes HashMap<String,
