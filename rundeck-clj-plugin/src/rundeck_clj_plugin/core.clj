@@ -10,7 +10,8 @@
   (:import
    (com.dtolabs.rundeck.plugins.util DescriptionBuilder PropertyBuilder)))
 
-(defn- get-description []
+(defn get-description []
+  (println "Hello from Clojure!")
   (-> (DescriptionBuilder/builder)
       (.name "rundeck_clj_plugin.HelloStepPlugin")
       (.title "Hello Step")
@@ -58,11 +59,6 @@
                      (.values (into-array String ["Flambe", "Crambo"]))
                      (.build)))
       (.build)))
-
-(defn hello []
-  (println "Hello from Clojure!")
-  (let [description (get-description)]
-    description))
 
 ;;
 ;; I am afraid we need a real Class implementing the interface, not an

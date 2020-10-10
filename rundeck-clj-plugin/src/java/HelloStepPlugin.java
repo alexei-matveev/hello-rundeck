@@ -83,9 +83,9 @@ public class HelloStepPlugin implements StepPlugin, Describable {
         IFn require = Clojure.var ("clojure.core", "require");
         require.invoke (Clojure.read ("rundeck-clj-plugin.core"));
 
-        IFn hello = Clojure.var ("rundeck-clj-plugin.core", "hello");
+        IFn fn = Clojure.var ("rundeck-clj-plugin.core", "get-description");
 
-        return (Description) hello.invoke();
+        return (Description) fn.invoke();
     }
 
     /**
