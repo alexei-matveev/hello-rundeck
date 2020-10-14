@@ -49,13 +49,11 @@ public class HelloStep implements StepPlugin, Describable {
     // class files, jars, and the class loader so that Clojure ist not
     // able to bootstrap itself without this voodoo [1]:
     //
-    //     Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-    //
     // [1] https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
     //
     public HelloStep () {
         Thread.currentThread()
-            .setContextClassLoader (HelloStep.class.getClassLoader());
+            .setContextClassLoader (this.getClass().getClassLoader());
 
         // Load the namespace once, it will be used in at least two
         // methods:
