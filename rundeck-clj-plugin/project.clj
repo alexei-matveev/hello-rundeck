@@ -28,8 +28,10 @@
   :uberjar-name "rundeck-clj-plugin-0.1.0.jar"
   :manifest {"Rundeck-Plugin-Version" "1.2"
              "Rundeck-Plugin-Archive" "true"
-             ;; rundeck_clj_plugin.core didnt quite work, see below:
-             "Rundeck-Plugin-Classnames" "rundeck_clj_plugin.HelloStepPlugin"
+             ;; Comma-separated. FWIW, the rundeck_clj_plugin.core
+             ;; didnt quite work, see below:
+             "Rundeck-Plugin-Classnames" "rundeck_clj_plugin.HelloStepPlugin,rundeck_clj_plugin.HelloNodes"
+             ;; Space-separated:
              "Rundeck-Plugin-Libs" ""
              ;; "Class-Path" ""
              "Rundeck-Plugin-Author" "f0bec0d"
