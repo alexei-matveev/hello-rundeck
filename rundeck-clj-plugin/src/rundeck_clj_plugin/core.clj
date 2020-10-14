@@ -147,16 +147,24 @@
 ;; [3] https://github.com/rundeck/rundeck/blob/development/examples/json-plugin/src/main/java/com/dtolabs/rundeck/plugin/resources/format/json/JsonResourceFormatParser.java
 ;; [4] https://github.com/rundeck-plugins/rundeck-ec2-nodes-plugin
 ;;
-(defn- demo-make-node []
-  (let [node (doto (NodeEntryImpl.)
-               ;; Should rather be a mutable HashSet:
-               (.setTags #{"critical" "test"})
-               ;; Should rather be a mutable HashMap:
-               (.setAttributes {"name" "Just-Name",
-                                "nodename" "Node-Name" ; obligatory
-                                "hostname" "127.0.0.42"
-                                "username" "rOOt"}))]
-    node))
+(defn- make-node [attributes tags]
+  (doto (NodeEntryImpl.)
+    ;; Should better be a mutable HashSet:
+    (.setTags tags)
+    ;; Should better be a mutable HashMap:
+    (.setAttributes attributes)))
+
+(defn- make-nodes []
+  [(make-node {"name" "Just-Name",
+               "nodename" "Node-Name"   ; obligatory
+               "hostname" "127.0.0.42"
+               "username" "rOOt"}
+              #{"critical" "test"})
+   (make-node {"name" "Another-Name",
+               "nodename" "Node-Name-2"
+               "hostname" "127.0.0.99"
+               "username" "r00t"}
+              #{"production"})])
 
 (defn create-resource-model-source [properties]
   (println "create-resource-model-source: building resource model source ...")
@@ -164,9 +172,13 @@
   (reify ResourceModelSource
     ;; Should return an INodeSet:
     (getNodes [_]
-      (println "getNodes: just one in a HashMap ...")
-      (NodeSetImpl. (java.util.HashMap.
-                     {"Local-Host" (demo-make-node)})))))
+      (println "getNodes: just a few in a HashMap ...")
+      ;; Note sure  if the  keys are ever  used, generate  some random
+      ;; symbols:
+      (let [nodes (into {}
+                        (for [n (make-nodes)]
+                          [(str (gensym)) n]))]
+        (NodeSetImpl. (java.util.HashMap. nodes))))))
 
 (defn -main
   "I don't do a whole lot ... yet."
