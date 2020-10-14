@@ -150,20 +150,23 @@
 (defn- demo-make-node []
   (let [node (doto (NodeEntryImpl.)
                ;; Should rather be a mutable HashSet:
-               (.setTags #{"critical" "to be removed"})
+               (.setTags #{"critical" "test"})
                ;; Should rather be a mutable HashMap:
-               (.setAttributes {"name" "localhost", "hostid" "1234"}))]
-    {:node node
-     :tags (.getTags node)
-     :attributes (.getAttributes node)}))
+               (.setAttributes {"name" "Just-Name",
+                                "nodename" "Node-Name" ; obligatory
+                                "hostname" "127.0.0.42"
+                                "username" "rOOt"}))]
+    node))
 
 (defn create-resource-model-source [properties]
   (println "create-resource-model-source: building resource model source ...")
+  (println {:properties properties})
   (reify ResourceModelSource
     ;; Should return an INodeSet:
     (getNodes [_]
-      (println "getNodes: dont have any yet ...")
-      (NodeSetImpl.))))
+      (println "getNodes: just one in a HashMap ...")
+      (NodeSetImpl. (java.util.HashMap.
+                     {"Local-Host" (demo-make-node)})))))
 
 (defn -main
   "I don't do a whole lot ... yet."
