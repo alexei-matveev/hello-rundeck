@@ -12,10 +12,32 @@ import com.dtolabs.rundeck.core.resources.ResourceModelSourceFactory;
 
 import java.util.Properties;
 
+import clojure.java.api.Clojure;
+import clojure.lang.IFn;
+
 // Resource   Model  Plugin   is   a  factory   that   can  create   a
 // ResourceModelSource based on a configuration.
-@Plugin(name = "HelloNodes", service = "ResourceModelSource")
+@Plugin(name = HelloNodes.NAME, service = "ResourceModelSource")
 public class HelloNodes implements ResourceModelSourceFactory, Describable {
+    static final String NAME = "HelloNodes";
+
+    // Maybe one schould separate code on the Clojure side too:
+    static final String ns = "rundeck-clj-plugin.core";
+
+    // Trying to  call Clojure from  here without the voodoo  with the
+    // Class Loader will fail at loading clojure/core__init.class. See
+    // Internets [1].
+    //
+    // [1] https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
+    public HelloNodes () {
+        Thread.currentThread()
+            .setContextClassLoader (this.getClass().getClassLoader());
+
+        // Load the namespace once:
+        IFn require = Clojure.var ("clojure.core", "require");
+        require.invoke (Clojure.read (ns));
+    }
+
     public ResourceModelSource createResourceModelSource (final Properties properties)
         throws ConfigurationException {
         // FIXME: actual impl?
@@ -23,7 +45,8 @@ public class HelloNodes implements ResourceModelSourceFactory, Describable {
     }
 
     public Description getDescription () {
-        // FIXME: actual impl?
-        return null;
+        IFn fn = Clojure.var (ns, "get-description");
+        return (Description) fn.invoke (NAME);
+
     }
 }
