@@ -138,9 +138,13 @@
 ;; subsequent .setAttributes.  Go figure.   Do not use the *attribute*
 ;; "tags".  FWIW, the order in the example is reversed [3].
 ;;
+;; For e reasonable example of a Resource Model Source Plugin see "EC2
+;; Nodes Plugin" [4].
+;;
 ;; [1] https://github.com/rundeck/rundeck/blob/main/core/src/main/java/com/dtolabs/rundeck/core/common/NodeEntryImpl.java
 ;; [2] https://github.com/rundeck/rundeck/blob/main/core/src/main/java/com/dtolabs/rundeck/core/common/NodeSetImpl.java
 ;; [3] https://github.com/rundeck/rundeck/blob/development/examples/json-plugin/src/main/java/com/dtolabs/rundeck/plugin/resources/format/json/JsonResourceFormatParser.java
+;; [4] https://github.com/rundeck-plugins/rundeck-ec2-nodes-plugin
 ;;
 (defn- demo-make-node []
   (let [node (doto (NodeEntryImpl.)
