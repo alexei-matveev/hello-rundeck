@@ -10,7 +10,7 @@ import com.dtolabs.rundeck.core.plugins.configuration.*;
 import com.dtolabs.rundeck.core.resources.ResourceModelSource;
 import com.dtolabs.rundeck.core.resources.ResourceModelSourceFactory;
 
-import java.util.*;
+import java.util.Properties;
 
 // Resource   Model  Plugin   is   a  factory   that   can  create   a
 // ResourceModelSource based on a configuration.
