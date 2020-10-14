@@ -22,7 +22,8 @@
    (com.dtolabs.rundeck.core.execution.workflow.steps StepException FailureReason)
    ;; We wont  really need  to construct  nodes here,  just understand
    ;; them good enough:
-   (com.dtolabs.rundeck.core.common INodeEntry NodeEntryImpl NodeSetImpl)))
+   (com.dtolabs.rundeck.core.common INodeEntry NodeEntryImpl NodeSetImpl)
+   (com.dtolabs.rundeck.core.resources ResourceModelSource)))
 
 ;; To make Description for a Describable Plugin you may consider using
 ;; this  Builder pattern.   There are  instances for  method ".values"
@@ -155,6 +156,14 @@
     {:node node
      :tags (.getTags node)
      :attributes (.getAttributes node)}))
+
+(defn create-resource-model-source [properties]
+  (println "create-resource-model-source: building resource model source ...")
+  (reify ResourceModelSource
+    ;; Should return an INodeSet:
+    (getNodes [_]
+      (println "getNodes: dont have any yet ...")
+      (NodeSetImpl.))))
 
 (defn -main
   "I don't do a whole lot ... yet."

@@ -40,13 +40,12 @@ public class HelloNodes implements ResourceModelSourceFactory, Describable {
 
     public ResourceModelSource createResourceModelSource (final Properties properties)
         throws ConfigurationException {
-        // FIXME: actual impl?
-        return null;
+        IFn fn = Clojure.var (ns, "create-resource-model-source");
+        return (ResourceModelSource) fn.invoke (properties);
     }
 
     public Description getDescription () {
         IFn fn = Clojure.var (ns, "get-description");
         return (Description) fn.invoke (NAME);
-
     }
 }
