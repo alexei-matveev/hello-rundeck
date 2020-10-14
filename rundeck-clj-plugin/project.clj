@@ -26,19 +26,22 @@
   ;; https://docs.rundeck.com/docs/developer/01-plugin-development.html#java-plugin-development
   :jar-name "rundeck-clj-plugin-0.1.0.jar"
   :uberjar-name "rundeck-clj-plugin-0.1.0.jar"
-  :manifest {"Rundeck-Plugin-Version" "1.2"
-             "Rundeck-Plugin-Archive" "true"
-             ;; Comma-separated. FWIW, the rundeck_clj_plugin.core
-             ;; didnt quite work, see below:
-             "Rundeck-Plugin-Classnames" "rundeck_clj_plugin.HelloStepPlugin,rundeck_clj_plugin.HelloNodes"
-             ;; Space-separated:
-             "Rundeck-Plugin-Libs" ""
-             ;; "Class-Path" ""
-             "Rundeck-Plugin-Author" "f0bec0d"
-             "Rundeck-Plugin-URL" "https://github.com/alexei-matveev/hello-rundeck"
-             "Rundeck-Plugin-Date" ~(.format (java.text.SimpleDateFormat. "yyyy-MM-dd")
+  :manifest ~{"Rundeck-Plugin-Version" "1.2"
+              "Rundeck-Plugin-Archive" "true"
+              ;; Comma-separated. FWIW, the rundeck_clj_plugin.core
+              ;; didnt quite work, see below:
+              "Rundeck-Plugin-Classnames" (clojure.string/join
+                                           ","
+                                           (for [c ["HelloStepPlugin" "HelloNodes"]]
+                                             (str "rundeck_clj_plugin." c)))
+              ;; Space-separated:
+              "Rundeck-Plugin-Libs" ""
+              ;; "Class-Path" ""
+              "Rundeck-Plugin-Author" "f0bec0d"
+              "Rundeck-Plugin-URL" "https://github.com/alexei-matveev/hello-rundeck"
+              "Rundeck-Plugin-Date" (.format (java.text.SimpleDateFormat. "yyyy-MM-dd")
                                              (java.util.Date.))
-             "Rundeck-Plugin-File-Version" ~(.format (java.text.SimpleDateFormat. "yyyyMMddHHmm")
+              "Rundeck-Plugin-File-Version" (.format (java.text.SimpleDateFormat. "yyyyMMddHHmm")
                                                      (java.util.Date.))})
 
 ;;
