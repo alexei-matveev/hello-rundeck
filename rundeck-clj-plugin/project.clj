@@ -32,7 +32,7 @@
               ;; didnt quite work, see below:
               "Rundeck-Plugin-Classnames" (clojure.string/join
                                            ","
-                                           (for [c ["HelloStepPlugin" "HelloNodes"]]
+                                           (for [c ["HelloStep" "HelloNodes"]]
                                              (str "rundeck_clj_plugin." c)))
               ;; Space-separated:
               "Rundeck-Plugin-Libs" ""

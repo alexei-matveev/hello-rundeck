@@ -2,9 +2,9 @@
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 //
-// HelloStepPlugin  demonstrates  a  basic StepPlugin.   Building  the
-// plugin's  Properties to  be exposed  in  the Rundeck  GUI has  been
-// delegated to Clojure code.
+// HelloStep demonstrates  a basic StepPlugin.  Building  the plugin's
+// Properties to be  exposed in the Rundeck GUI has  been delegated to
+// Clojure code.
 //
 // The plugin  class is annotated  with @Plugin to define  the service
 // and name  of this service provider  plugin. As I understood  it ---
@@ -34,11 +34,11 @@ import java.util.Map;
 import clojure.java.api.Clojure;
 import clojure.lang.IFn;
 
-@Plugin(name = HelloStepPlugin.SERVICE_PROVIDER_NAME, service = ServiceNameConstants.WorkflowStep)
-public class HelloStepPlugin implements StepPlugin, Describable {
+@Plugin(name = HelloStep.NAME, service = ServiceNameConstants.WorkflowStep)
+public class HelloStep implements StepPlugin, Describable {
     // Define a name  used to identify your plugin. It  is a good idea
     // to use a fully qualified package-style name.
-    public static final String SERVICE_PROVIDER_NAME = "rundeck_clj_plugin.HelloStepPlugin";
+    public static final String NAME = "rundeck_clj_plugin.HelloStep";
     static final String ns = "rundeck-clj-plugin.core";
 
     //
@@ -53,9 +53,9 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     //
     // [1] https://groups.google.com/forum/#!msg/clojure/Aa04E9aJRog/f0CXZCN1z0AJ
     //
-    public HelloStepPlugin () {
+    public HelloStep () {
         Thread.currentThread()
-            .setContextClassLoader (HelloStepPlugin.class.getClassLoader());
+            .setContextClassLoader (HelloStep.class.getClassLoader());
 
         // Load the namespace once, it will be used in at least two
         // methods:
@@ -69,7 +69,7 @@ public class HelloStepPlugin implements StepPlugin, Describable {
     // of the description, add or remove properties, etc.
     public Description getDescription() {
         IFn fn = Clojure.var (ns, "get-description");
-        return (Description) fn.invoke (SERVICE_PROVIDER_NAME);
+        return (Description) fn.invoke (NAME);
     }
 
     // Here is  the meat  of the  plugin implementation,  which should
