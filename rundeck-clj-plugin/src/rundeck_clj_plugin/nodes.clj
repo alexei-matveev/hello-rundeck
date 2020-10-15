@@ -59,17 +59,18 @@
     ;; Should better be a mutable HashMap:
     (.setAttributes attributes)))
 
-(defn- make-nodes []
-  [(make-node {"name" "Just-Name",
-               "nodename" "Node-Name"   ; obligatory
-               "hostname" "127.0.0.42"
-               "username" "rOOt"}
-              #{"critical" "test"})
-   (make-node {"name" "Another-Name",
-               "nodename" "Node-Name-2"
-               "hostname" "127.0.0.99"
-               "username" "r00t"}
-              #{"production"})])
+(defn- make-nodes [properties]
+  (let [user (get properties "user-name" "root")]
+    [(make-node {"name" "Just-Name",
+                 "nodename" "Node-Name"   ; obligatory
+                 "hostname" "127.0.0.42"
+                 "username" user}
+                #{"critical" "test"})
+     (make-node {"name" "Another-Name",
+                 "nodename" "Node-Name-2"
+                 "hostname" "127.0.0.99"
+                 "username" user}
+                #{"production"})]))
 
 (defn create-resource-model-source [properties]
   (println "create-resource-model-source: building resource model source ...")
@@ -81,7 +82,7 @@
       ;; Note sure  if the  keys are ever  used, generate  some random
       ;; symbols:
       (let [nodes (into {}
-                        (for [^INodeEntry n (make-nodes)]
+                        (for [^INodeEntry n (make-nodes properties)]
                           #_[(.getNodename n) n]
                           [(str (gensym)) n]))]
         (NodeSetImpl. (java.util.HashMap. ^java.util.Map nodes))))))
