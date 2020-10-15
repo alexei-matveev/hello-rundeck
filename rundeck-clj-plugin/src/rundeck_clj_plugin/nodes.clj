@@ -66,6 +66,9 @@
     ;; Should better be a mutable HashMap:
     (.setAttributes attributes)))
 
+;; You will  probably want to move  the core functionality out  of the
+;; namespaces "tainted" by  Rundeck Classes, even if  just for testing
+;; from the CLI or such.
 (defn- make-nodes [properties]
   ;; These defaults should  not apply, right? Rundeck  will supply its
   ;; own, coded in Properties, wont it?
