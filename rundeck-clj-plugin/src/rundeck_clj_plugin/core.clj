@@ -176,9 +176,10 @@
       ;; Note sure  if the  keys are ever  used, generate  some random
       ;; symbols:
       (let [nodes (into {}
-                        (for [n (make-nodes)]
+                        (for [^INodeEntry n (make-nodes)]
+                          #_[(.getNodename n) n]
                           [(str (gensym)) n]))]
-        (NodeSetImpl. (java.util.HashMap. nodes))))))
+        (NodeSetImpl. (java.util.HashMap. ^java.util.Map nodes))))))
 
 (defn -main
   "I don't do a whole lot ... yet."
