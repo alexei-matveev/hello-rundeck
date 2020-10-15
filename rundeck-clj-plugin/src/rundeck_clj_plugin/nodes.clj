@@ -50,6 +50,13 @@
                      (.defaultValue "root")
                      (.required true)
                      (.build)))
+      (.property (-> (PropertyBuilder/builder)
+                     (.integer "node-count")
+                     (.title "Node count")
+                     (.description "How many?")
+                     (.required false)
+                     (.defaultValue "2")
+                     (.build)))
       (.build)))
 
 (defn- make-node [attributes tags]
@@ -60,17 +67,17 @@
     (.setAttributes attributes)))
 
 (defn- make-nodes [properties]
-  (let [user (get properties "user-name" "root")]
-    [(make-node {"name" "Just-Name",
-                 "nodename" "Node-Name"   ; obligatory
-                 "hostname" "127.0.0.42"
-                 "username" user}
-                #{"critical" "test"})
-     (make-node {"name" "Another-Name",
-                 "nodename" "Node-Name-2"
-                 "hostname" "127.0.0.99"
-                 "username" user}
-                #{"production"})]))
+  ;; These defaults should  not apply, right? Rundeck  will supply its
+  ;; own, coded in Properties, wont it?
+  (let [user (get properties "user-name" "root")
+        node-count (Long/parseLong (get properties "node-count" "1"))]
+    (for [n (range node-count)
+          :let [node-name (str (gensym "node-name-"))]]
+      (make-node {"name" node-name
+                  "nodename" node-name ; obligatory
+                  "hostname" (str  "127.0.0." (rand-int 255))
+                  "username" user}
+                 #{(get ["production" "staging" "test"] (rand-int 3))}))))
 
 (defn create-resource-model-source [properties]
   (println "create-resource-model-source: building resource model source ...")
