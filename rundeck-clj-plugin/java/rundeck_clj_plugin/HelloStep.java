@@ -39,7 +39,7 @@ public class HelloStep implements StepPlugin, Describable {
     // Define a name  used to identify your plugin. It  is a good idea
     // to use a fully qualified package-style name.
     public static final String NAME = "rundeck_clj_plugin.HelloStep";
-    static final String ns = "rundeck-clj-plugin.core";
+    static final String ns = "rundeck-clj-plugin.step";
 
     //
     // Trying to  call Clojure  from here without  the voodo  with the

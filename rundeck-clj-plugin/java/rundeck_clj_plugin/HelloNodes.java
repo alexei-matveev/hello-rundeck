@@ -22,7 +22,7 @@ public class HelloNodes implements ResourceModelSourceFactory, Describable {
     static final String NAME = "HelloNodes";
 
     // Maybe one schould separate code on the Clojure side too:
-    static final String ns = "rundeck-clj-plugin.core";
+    static final String ns = "rundeck-clj-plugin.nodes";
 
     // Trying to  call Clojure from  here without the voodoo  with the
     // Class Loader will fail at loading clojure/core__init.class. See
